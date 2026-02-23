@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 import { format, isSameDay } from 'date-fns';
 import { Plus, ListFilter, CheckCircle2, Clock, CalendarDays, XCircle, Search, X } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
@@ -29,7 +30,7 @@ const Dashboard = ({ filter = 'today' }) => {
     const fetchTasks = async () => {
         if (!userId) return;
         try {
-            const res = await axios.get(`http://localhost:5000/api/tasks?userId=${userId}`);
+            const res = await axios.get(`${API_BASE_URL}/api/tasks?userId=${userId}`);
             setTasks(res.data);
             setIsLoading(false);
         } catch (error) {
@@ -41,7 +42,7 @@ const Dashboard = ({ filter = 'today' }) => {
     const fetchStats = async () => {
         if (!userId) return;
         try {
-            const res = await axios.get(`http://localhost:5000/api/tasks/stats?userId=${userId}`);
+            const res = await axios.get(`${API_BASE_URL}/api/tasks/stats?userId=${userId}`);
             setStats(res.data);
         } catch (error) {
             console.error('Error fetching stats:', error);
@@ -65,9 +66,9 @@ const Dashboard = ({ filter = 'today' }) => {
     const handleCreateTask = async (taskData) => {
         try {
             if (editingTask) {
-                await axios.put(`http://localhost:5000/api/tasks/${editingTask._id}`, taskData);
+                await axios.put(`${API_BASE_URL}/api/tasks/${editingTask._id}`, taskData);
             } else {
-                await axios.post('http://localhost:5000/api/tasks', { ...taskData, userId });
+                await axios.post(`${API_BASE_URL}/api/tasks`, { ...taskData, userId });
             }
             await refreshData();
             setEditingTask(null); // Clear editing state
@@ -83,7 +84,7 @@ const Dashboard = ({ filter = 'today' }) => {
 
     const handleStatusUpdate = async (id, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/tasks/${id}`, { status: newStatus });
+            await axios.put(`${API_BASE_URL}/api/tasks/${id}`, { status: newStatus });
             refreshData();
         } catch (error) {
             console.error('Error updating task:', error);
@@ -92,7 +93,7 @@ const Dashboard = ({ filter = 'today' }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+            await axios.delete(`${API_BASE_URL}/api/tasks/${id}`);
             refreshData();
         } catch (error) {
             console.error('Error deleting task:', error);
@@ -101,7 +102,7 @@ const Dashboard = ({ filter = 'today' }) => {
 
     const handleTaskUpdate = async (id, updates) => {
         try {
-            await axios.put(`http://localhost:5000/api/tasks/${id}`, updates);
+            await axios.put(`${API_BASE_URL}/api/tasks/${id}`, updates);
             await refreshData();
             // Update selectedTask if it's the one being viewed so the modal reflects changes immediately
             if (selectedTask && selectedTask._id === id) {
