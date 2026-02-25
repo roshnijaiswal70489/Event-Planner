@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://roshnijaiswal:crhrcIHmM178HtmS@cluster0.zijc2qz.mongodb.net/eventplanner')
+mongoose.connect('mongodb+srv://roshnijaiswal:roshnijaiswal@cluster0.zijc2qz.mongodb.net/eventplanner')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB Connection Error:', err));
 
@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
